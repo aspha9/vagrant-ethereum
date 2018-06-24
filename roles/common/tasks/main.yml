@@ -1,0 +1,7 @@
+---
+
+- include_tasks: install_additional_packages.yml
+  tags: common_task
+
+- include_tasks: setup_locales.yml
+  tags: common_task

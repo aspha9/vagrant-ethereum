@@ -8,3 +8,9 @@ vagrant_ansible_inventory_default
 
 # Ansible
 *.retry
+
+#User files
+.DS_Store
+.vagrantfile
+.vscode
+/vscode

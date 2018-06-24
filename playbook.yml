@@ -1,0 +1,21 @@
+---
+- hosts: all
+  connection: local
+  gather_facts: true    # gather OS info that is made available for tasks/roles
+  become: yes           # majority of CIS tasks require root
+  vars:
+      home: /home/ubuntu
+      document_root: /ubuntu
+      os: ubuntu
+      osversioncode: xenial
+      env: dev      
+      update_apt_cache: yes
+
+  vars_files:
+    - env_vars/base.yml
+    #- env_vars/{{ env }}.yml
+   
+  roles:
+    - common        
+    - geth
+    - eth-npm

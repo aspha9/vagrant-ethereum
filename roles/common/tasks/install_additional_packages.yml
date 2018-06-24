@@ -1,0 +1,52 @@
+---
+# Ensure all packages have been patched
+
+- name: Update apt cache and optionally upgrade
+  apt:
+    update_cache=yes
+    cache_valid_time=7200
+
+- name: Install security updates
+  apt: default_release={{ ansible_distribution_release }}-security
+       update_cache={{ update_apt_cache }}
+       upgrade=dist
+  tags:
+    - packages
+    - skip_ansible_lint
+
+- name: Install base packages
+  apt: name={{ item }} update_cache={{ update_apt_cache }} state=installed
+  when: ansible_distribution == "Ubuntu"
+  with_items:
+    - build-essential
+    - software-properties-common
+    - gdb
+    - cgdb
+    - acl
+    - ntp
+    - htop
+    - git
+    - "{{ base_python_package }}-pip"
+    - "i{{ base_python_package }}"
+  tags:
+    - packages
+    - packages.security
+
+- name: Upgrade pip
+  pip: name=pip state=latest
+  tags:
+    - packages
+    - skip_ansible_lint    
+
+- name: Install additional packages
+  apt: name={{ item }} update_cache={{ update_apt_cache }} state=installed
+  when: ansible_distribution == "Ubuntu"
+  with_items:
+    - git
+    - tig
+    - vim
+    - bash-completion
+    - make
+    - tree
+    - tmux
+    - man-db          
